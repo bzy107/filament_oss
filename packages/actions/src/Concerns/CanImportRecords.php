@@ -58,12 +58,15 @@ trait CanImportRecords
 
     protected string | Closure | null $csvDelimiter = null;
 
-    protected array $fileRules = [];
-
     /**
      * @var array<string, mixed> | Closure
      */
     protected array | Closure $options = [];
+
+    /**
+     * @var array<string, mixed>
+     */
+    protected array $fileRules = [];
 
     protected function setUp(): void
     {
@@ -594,7 +597,7 @@ trait CanImportRecords
     }
 
     /**
-     * @param  array<string, mixed>
+     * @param  array<string, mixed> $rule
      */
     public function fileRules(array $rule): static
     {
