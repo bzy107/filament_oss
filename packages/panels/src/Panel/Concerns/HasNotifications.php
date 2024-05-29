@@ -12,7 +12,7 @@ trait HasNotifications
 
     protected null | bool | Closure $broadcastEnabled = null;
 
-    public function databaseNotifications(bool | Closure $condition = true, bool | Closure $broadcastEnabled): static
+    public function databaseNotifications(bool | Closure $condition = true, bool | Closure $broadcastEnabled = false): static
     {
         $this->hasDatabaseNotifications = $condition;
         $this->broadcastEnabled = $broadcastEnabled;
