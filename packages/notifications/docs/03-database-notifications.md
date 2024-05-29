@@ -66,6 +66,12 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+To notify the front end via [broadcast](https://laravel.com/docs/broadcasting), set broadcastEnabled to true.
+```php
+    return $panel
+        ->databaseNotifications(broadcastEnabled: true);
+```
+
 To learn more, visit the [Panel Builder documentation](../panels/notifications).
 
 ## Sending database notifications
