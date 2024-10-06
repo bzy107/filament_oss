@@ -163,17 +163,28 @@ trait InteractsWithTableQuery
 
         $relatedQuery = $relationship->getRelated()::query();
 
-        return $relationship
+        $currentRelationshipNames = $this->getSortColumnForQuery(
+            $relatedQuery,
+            $sortColumn,
+            $relationships,
+        );
+
+        $relation = $relationship
             ->getRelationExistenceQuery(
                 $relatedQuery,
                 $query,
-                [$currentRelationshipName => $this->getSortColumnForQuery(
-                    $relatedQuery,
-                    $sortColumn,
-                    $relationships,
-                )],
-            )
-            ->applyScopes()
-            ->getQuery();
+                [$currentRelationshipName => $currentRelationshipNames],
+            );
+
+        $applyScopes = $relation->applyScopes();
+
+        foreach ($applyScopes->getQuery()->wheres as $index => $wheres) {
+            if ($wheres['type'] === 'Basic') {
+                $applyScopes->select()->whereColumn($wheres['column'], $wheres['operator'], $wheres['value']);
+                array_splice($applyScopes->getQuery()->wheres, $index, 1);
+            }
+        }
+        $getQuery = $applyScopes->getQuery();
+        return $getQuery;
     }
 }
