@@ -13,9 +13,6 @@ use Illuminate\Database\Eloquent\Collection;
 uses(TestCase::class);
 
 it('can filter records by text constraint in the query builder', function (Collection $all, Collection $canSee, Collection $canNotSee, string $column, string $operatorName, string $filter = null) {
-    // $posts = Post::factory()->count(10)->create();
-    // $title = $posts->first()->title;
-
     livewire(Posts2Table::class)
         ->assertCanSeeTableRecords($all)
         ->queryBuilderTable($column, $operatorName, $filter)
@@ -129,7 +126,6 @@ it('can filter records by text constraint in the query builder', function (Colle
         Post::factory()->count(8)->create();
         Post::factory()->create(['content' => null]);
         Post::factory()->create(['content' => '']);
-        // dd(Post::where('content', null)->orWhere('content', '')->get());
         return [
             'all' => Post::all(),
             'canSee' => Post::where('content', '<>', null)->where('content', '<>', '')->get(),
