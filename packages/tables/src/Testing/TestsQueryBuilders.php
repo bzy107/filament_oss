@@ -25,7 +25,7 @@ class TestsQueryBuilders
 {
     public function queryBuilderTable(): Closure
     {
-        return function (string $column, string $operatorName, $data): static {
+        return function (string $column, string $operatorName, $data = null): static {
             /** @phpstan-ignore-next-line */
             $this->assertTableConstraintExists($column);
 
@@ -53,11 +53,13 @@ class TestsQueryBuilders
                     'type' => $column,
                     'data' => [
                         'operator' => $operatorName,
-                        'settings' => [
-                            'text' => $data,
-                        ]
+                        'settings' => [],
                     ]
                 ];
+
+                if ($data) {
+                    $queryBuilder['data']['settings'] = ['text' => $data];
+                }
             }
             // elseif ($filter instanceof SelectFilter) {
             //     if ($filter->isMultiple()) {

@@ -95,7 +95,8 @@ class Posts2Table extends Component implements HasForms, Tables\Contracts\HasTab
             ->filters([
                 QueryBuilder::make()
                     ->constraints([
-                        TextConstraint::make('title'),
+                        TextConstraint::make('content')
+                            ->nullable(),
                     ]),
             ])
             ->persistFiltersInSession()

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 uses(TestCase::class);
 
-it('can filter records by text constraint in the query builder', function (Collection $all, Collection $canSee, Collection $canNotSee, string $column, string $operatorName, string $filter) {
+it('can filter records by text constraint in the query builder', function (Collection $all, Collection $canSee, Collection $canNotSee, string $column, string $operatorName, string $filter = null) {
     // $posts = Post::factory()->count(10)->create();
     // $title = $posts->first()->title;
 
@@ -25,129 +25,129 @@ it('can filter records by text constraint in the query builder', function (Colle
 ->with([
     'contains' => function () {
         $posts = Post::factory()->count(10)->create();
-        $title = $posts->random()->title;
-        $filter = substr($title, 2, 7);
+        $content = $posts->random()->content;
+        $filter = substr($content, 2, 7);
         return [
             'all' => $posts,
-            'canSee' => Post::where('title', 'like', '%'. $filter . '%')->get(),
-            'canNotSee' => Post::where('title', 'not like', '%'. $filter . '%')->get(),
-            'column' => 'title',
+            'canSee' => Post::where('content', 'like', '%'. $filter . '%')->get(),
+            'canNotSee' => Post::where('content', 'not like', '%'. $filter . '%')->get(),
+            'column' => 'content',
             'operatorName' => 'contains',
             'filter' => $filter,
         ];
     },
     'not contains' => function () {
         $posts = Post::factory()->count(10)->create();
-        $title = $posts->random()->title;
-        $filter = substr($title, 2, 7);
+        $content = $posts->random()->content;
+        $filter = substr($content, 2, 7);
         return [
             'all' => $posts,
-            'canSee' => Post::where('title', 'not like', '%' . $filter . '%')->get(),
-            'canNotSee' => Post::where('title', 'like' , '%' . $filter . '%')->get(),
-            'column' => 'title',
+            'canSee' => Post::where('content', 'not like', '%' . $filter . '%')->get(),
+            'canNotSee' => Post::where('content', 'like' , '%' . $filter . '%')->get(),
+            'column' => 'content',
             'operatorName' => 'contains.inverse',
             'filter' => $filter,
         ];
     },
     'startsWith' => function () {
         $posts = Post::factory()->count(10)->create();
-        $title = $posts->random()->title;
-        $filter = substr($title, 0, 5);
+        $content = $posts->random()->content;
+        $filter = substr($content, 0, 5);
         return [
             'all' => $posts,
-            'canSee' => Post::where('title', 'like', $filter . '%')->get(),
-            'canNotSee' => Post::where('title', 'not like', $filter . '%')->get(),
-            'column' => 'title',
+            'canSee' => Post::where('content', 'like', $filter . '%')->get(),
+            'canNotSee' => Post::where('content', 'not like', $filter . '%')->get(),
+            'column' => 'content',
             'operatorName' => 'startsWith',
             'filter' => $filter,
         ];
     },
     'not startsWith' => function () {
         $posts = Post::factory()->count(10)->create();
-        $title = $posts->random()->title;
-        $filter = substr($title, 0, 5);
+        $content = $posts->random()->content;
+        $filter = substr($content, 0, 5);
         return [
             'all' => $posts,
-            'canSee' => Post::where('title', 'not like', $filter . '%')->get(),
-            'canNotSee' => Post::where('title', 'like', $filter . '%')->get(),
-            'column' => 'title',
+            'canSee' => Post::where('content', 'not like', $filter . '%')->get(),
+            'canNotSee' => Post::where('content', 'like', $filter . '%')->get(),
+            'column' => 'content',
             'operatorName' => 'startsWith.inverse',
             'filter' => $filter,
         ];
     },
     'endsWith' => function () {
         $posts = Post::factory()->count(10)->create();
-        $title = $posts->random()->title;
-        $filter = substr($title, -5);
+        $content = $posts->random()->content;
+        $filter = substr($content, -5);
         return [
             'all' => $posts,
-            'canSee' => Post::where('title', 'like', '%' . $filter)->get(),
-            'canNotSee' => Post::where('title', 'not like', '%' . $filter)->get(),
-            'column' => 'title',
+            'canSee' => Post::where('content', 'like', '%' . $filter)->get(),
+            'canNotSee' => Post::where('content', 'not like', '%' . $filter)->get(),
+            'column' => 'content',
             'operatorName' => 'endsWith',
             'filter' => $filter,
         ];
     },
     'not endsWith' => function () {
         $posts = Post::factory()->count(10)->create();
-        $title = $posts->random()->title;
-        $filter = substr($title, -5);
+        $content = $posts->random()->content;
+        $filter = substr($content, -5);
         return [
             'all' => $posts,
-            'canSee' => Post::where('title', 'not like', '%' . $filter)->get(),
-            'canNotSee' => Post::where('title', 'like', '%' . $filter)->get(),
-            'column' => 'title',
+            'canSee' => Post::where('content', 'not like', '%' . $filter)->get(),
+            'canNotSee' => Post::where('content', 'like', '%' . $filter)->get(),
+            'column' => 'content',
             'operatorName' => 'endsWith.inverse',
             'filter' => $filter,
         ];
     },
     'equals' => function () {
         $posts = Post::factory()->count(10)->create();
-        $title = $posts->random()->title;
+        $content = $posts->random()->content;
         return [
             'all' => $posts,
-            'canSee' => Post::where('title', $title)->get(),
-            'canNotSee' => Post::where('title', '<>', $title)->get(),
-            'column' => 'title',
+            'canSee' => Post::where('content', $content)->get(),
+            'canNotSee' => Post::where('content', '<>', $content)->get(),
+            'column' => 'content',
             'operatorName' => 'equals',
-            'filter' => $title,
+            'filter' => $content,
         ];
     },
     'not equals' => function () {
         $posts = Post::factory()->count(10)->create();
-        $title = $posts->random()->title;
+        $content = $posts->random()->content;
         return [
             'all' => $posts,
-            'canSee' => Post::where('title', '<>', $title)->get(),
-            'canNotSee' => Post::where('title', $title)->get(),
-            'column' => 'title',
+            'canSee' => Post::where('content', '<>', $content)->get(),
+            'canNotSee' => Post::where('content', $content)->get(),
+            'column' => 'content',
             'operatorName' => 'equals.inverse',
-            'filter' => $title,
+            'filter' => $content,
         ];
     },
     'isFilled' => function () {
-        Post::factory()->count(9)->create();
+        Post::factory()->count(8)->create();
         Post::factory()->create(['content' => null]);
-        dd(Post::all());
+        Post::factory()->create(['content' => '']);
+        // dd(Post::where('content', null)->orWhere('content', '')->get());
         return [
             'all' => Post::all(),
-            'canSee' => Post::where('content', '<>', null)->get(),
-            'canNotSee' => Post::where('content', null)->get(),
+            'canSee' => Post::where('content', '<>', null)->where('content', '<>', '')->get(),
+            'canNotSee' => Post::where('content', null)->orWhere('content', '')->get(),
             'column' => 'content',
             'operatorName' => 'isFilled',
-            'filter' => null,
         ];
     },
     'not isFilled' => function () {
-        Post::factory()->count(9)->create();
+        Post::factory()->count(8)->create();
         Post::factory()->create(['content' => null]);
+        Post::factory()->create(['content' => '']);
         return [
             'all' => Post::all(),
-            'canSee' => Post::where('content', null)->get(),
-            'canNotSee' => Post::where('content', '<>', null)->get(),
+            'canSee' => Post::where('content', null)->orWhere('content', '')->get(),
+            'canNotSee' => Post::where('content', '<>', null)->where('content', '<>', '')->get(),
             'column' => 'content',
             'operatorName' => 'isFilled.inverse',
-            'filter' => null,
         ];
     },
 ]);

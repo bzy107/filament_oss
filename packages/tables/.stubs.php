@@ -161,7 +161,7 @@ namespace Livewire\Features\SupportTesting {
 
         public function filterTable(string $name, $data = null): static {}
 
-        public function queryBuilderTable(string $column, string $operatorName, $data): static {}
+        public function queryBuilderTable(string $column, string $operatorName, $data = null): static {}
 
         public function resetTableFilters(): static {}
 
