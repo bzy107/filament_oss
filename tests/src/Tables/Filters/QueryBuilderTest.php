@@ -21,7 +21,7 @@ it('can filter records by text constraint in the query builder', function (Colle
 })
 ->with([
     'contains' => function () {
-        $posts = Post::factory()->count(10)->create();
+        $posts = Post::factory(10)->create();
         $content = $posts->random()->content;
         $filter = substr($content, 2, 7);
         return [
@@ -34,7 +34,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'not contains' => function () {
-        $posts = Post::factory()->count(10)->create();
+        $posts = Post::factory(10)->create();
         $content = $posts->random()->content;
         $filter = substr($content, 2, 7);
         return [
@@ -47,7 +47,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'startsWith' => function () {
-        $posts = Post::factory()->count(10)->create();
+        $posts = Post::factory(10)->create();
         $content = $posts->random()->content;
         $filter = substr($content, 0, 5);
         return [
@@ -60,7 +60,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'not startsWith' => function () {
-        $posts = Post::factory()->count(10)->create();
+        $posts = Post::factory(10)->create();
         $content = $posts->random()->content;
         $filter = substr($content, 0, 5);
         return [
@@ -73,7 +73,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'endsWith' => function () {
-        $posts = Post::factory()->count(10)->create();
+        $posts = Post::factory(10)->create();
         $content = $posts->random()->content;
         $filter = substr($content, -5);
         return [
@@ -86,7 +86,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'not endsWith' => function () {
-        $posts = Post::factory()->count(10)->create();
+        $posts = Post::factory(10)->create();
         $content = $posts->random()->content;
         $filter = substr($content, -5);
         return [
@@ -99,7 +99,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'equals' => function () {
-        $posts = Post::factory()->count(10)->create();
+        $posts = Post::factory(10)->create();
         $content = $posts->random()->content;
         return [
             'all' => $posts,
@@ -111,7 +111,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'not equals' => function () {
-        $posts = Post::factory()->count(10)->create();
+        $posts = Post::factory(10)->create();
         $content = $posts->random()->content;
         return [
             'all' => $posts,
@@ -123,7 +123,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'isFilled' => function () {
-        Post::factory()->count(8)->create();
+        Post::factory(8)->create();
         Post::factory()->create(['content' => null]);
         Post::factory()->create(['content' => '']);
         return [
@@ -135,7 +135,7 @@ it('can filter records by text constraint in the query builder', function (Colle
         ];
     },
     'not isFilled' => function () {
-        Post::factory()->count(8)->create();
+        Post::factory(8)->create();
         Post::factory()->create(['content' => null]);
         Post::factory()->create(['content' => '']);
         return [
@@ -148,8 +148,17 @@ it('can filter records by text constraint in the query builder', function (Colle
     },
 ]);
 
+// it('can filter records by text constraint in the query builder with modal', function () {
+//     $posts = Post::factory(10)->create();
+//     livewire(Posts2Table::class)
+//         ->assertCanSeeTableRecords($all)
+//         ->queryBuilderTable($column, $operatorName, $filter)
+//         ->assertCanSeeTableRecords($canSee)
+//         ->assertCanNotSeeTableRecords($canNotSee);
+// });
+
 // it('can filter records by relationship', function () {
-//     $posts = Post::factory()->count(10)->create();
+//     $posts = Post::factory(10)->create();
 
 //     $author = $posts->first()->author;
 
@@ -161,7 +170,7 @@ it('can filter records by text constraint in the query builder', function (Colle
 // });
 
 // it('can persist filters in the user\'s session', function () {
-//     $posts = Post::factory()->count(10)->create();
+//     $posts = Post::factory(10)->create();
 
 //     $unpublishedPosts = $posts->where('is_published', false);
 
@@ -182,7 +191,7 @@ it('can filter records by text constraint in the query builder', function (Colle
 // });
 
 // it('can reset filters', function () {
-//     $posts = Post::factory()->count(10)->create();
+//     $posts = Post::factory(10)->create();
 
 //     $unpublishedPosts = $posts->where('is_published', false);
 
@@ -194,7 +203,7 @@ it('can filter records by text constraint in the query builder', function (Colle
 // });
 
 // it('can remove a filter', function () {
-//     $posts = Post::factory()->count(10)->create();
+//     $posts = Post::factory(10)->create();
 
 //     $unpublishedPosts = $posts->where('is_published', false);
 
@@ -207,7 +216,7 @@ it('can filter records by text constraint in the query builder', function (Colle
 // });
 
 // it('can remove all table filters', function () {
-//     $posts = Post::factory()->count(10)->create();
+//     $posts = Post::factory(10)->create();
 
 //     $unpublishedPosts = $posts->where('is_published', false);
 
@@ -220,7 +229,7 @@ it('can filter records by text constraint in the query builder', function (Colle
 // });
 
 // it('can use a custom attribute for the `SelectFilter`', function () {
-//     $posts = Post::factory()->count(10)->create();
+//     $posts = Post::factory(10)->create();
 
 //     $unpublishedPosts = $posts->where('is_published', false);
 
