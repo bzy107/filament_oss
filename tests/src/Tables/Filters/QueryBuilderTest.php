@@ -1,19 +1,17 @@
 <?php
 
-use Filament\Tables\Filters\Filter;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tests\Models\Post;
-use Filament\Tests\Tables\Fixtures\Posts2Table;
-use Filament\Tests\Tables\Fixtures\PostsTable;
-
+use Filament\Tests\Tables\Fixtures\PostsQueryBuilderTable;
 use Filament\Tests\Tables\TestCase;
 use function Filament\Tests\livewire;
-use Illuminate\Database\Eloquent\Builder;
+use function Pest\Laravel\assertSoftDeleted;
 use Illuminate\Database\Eloquent\Collection;
 
 uses(TestCase::class);
 
 it('can filter records by text constraint in the query builder', function (Collection $all, Collection $canSee, Collection $canNotSee, string $column, string $operatorName, string $filter = null) {
-    livewire(Posts2Table::class)
+    livewire(PostsQueryBuilderTable::class)
         ->assertCanSeeTableRecords($all)
         ->queryBuilderTable($column, $operatorName, $filter)
         ->assertCanSeeTableRecords($canSee)
@@ -148,112 +146,16 @@ it('can filter records by text constraint in the query builder', function (Colle
     },
 ]);
 
-// it('can filter records by text constraint in the query builder with modal', function () {
-//     $posts = Post::factory(10)->create();
-//     livewire(Posts2Table::class)
-//         ->assertCanSeeTableRecords($all)
-//         ->queryBuilderTable($column, $operatorName, $filter)
-//         ->assertCanSeeTableRecords($canSee)
-//         ->assertCanNotSeeTableRecords($canNotSee);
-// });
+it('can filter records by text constraint in the query builder with modal', function () {
+    $posts = Post::factory()->count(10)->create();
+    $content = $posts->first()->content;
+    $post = Post::where('content', $content);
 
-// it('can filter records by relationship', function () {
-//     $posts = Post::factory(10)->create();
+    livewire(PostsQueryBuilderTable::class)
+        ->assertCanSeeTableRecords($posts)
+        ->queryBuilderTable('content', 'contains', $content)
+        ->assertCanSeeTableRecords($post->get())
+        ->callTableAction(DeleteAction::class, $post->first());
 
-//     $author = $posts->first()->author;
-
-//     livewire(PostsTable::class)
-//         ->assertCanSeeTableRecords($posts)
-//         ->filterTable('author', $author)
-//         ->assertCanSeeTableRecords($posts->where('author_id', $author->getKey()))
-//         ->assertCanNotSeeTableRecords($posts->where('author_id', '!=', $author->getKey()));
-// });
-
-// it('can persist filters in the user\'s session', function () {
-//     $posts = Post::factory(10)->create();
-
-//     $unpublishedPosts = $posts->where('is_published', false);
-
-//     livewire(PostsTable::class)
-//         ->assertCanSeeTableRecords($posts)
-//         ->filterTable('is_published')
-//         ->assertCanNotSeeTableRecords($unpublishedPosts);
-
-//     livewire(PostsTable::class)
-//         ->assertCanNotSeeTableRecords($unpublishedPosts);
-
-//     livewire(PostsTable::class)
-//         ->resetTableFilters()
-//         ->assertCanSeeTableRecords($unpublishedPosts);
-
-//     livewire(PostsTable::class)
-//         ->assertCanSeeTableRecords($unpublishedPosts);
-// });
-
-// it('can reset filters', function () {
-//     $posts = Post::factory(10)->create();
-
-//     $unpublishedPosts = $posts->where('is_published', false);
-
-//     livewire(PostsTable::class)
-//         ->filterTable('is_published')
-//         ->assertCanNotSeeTableRecords($unpublishedPosts)
-//         ->resetTableFilters()
-//         ->assertCanSeeTableRecords($unpublishedPosts);
-// });
-
-// it('can remove a filter', function () {
-//     $posts = Post::factory(10)->create();
-
-//     $unpublishedPosts = $posts->where('is_published', false);
-
-//     livewire(PostsTable::class)
-//         ->assertCanSeeTableRecords($posts)
-//         ->filterTable('is_published')
-//         ->assertCanNotSeeTableRecords($unpublishedPosts)
-//         ->removeTableFilter('is_published')
-//         ->assertCanSeeTableRecords($posts);
-// });
-
-// it('can remove all table filters', function () {
-//     $posts = Post::factory(10)->create();
-
-//     $unpublishedPosts = $posts->where('is_published', false);
-
-//     livewire(PostsTable::class)
-//         ->assertCanSeeTableRecords($posts)
-//         ->filterTable('is_published')
-//         ->assertCanNotSeeTableRecords($unpublishedPosts)
-//         ->removeTableFilters()
-//         ->assertCanSeeTableRecords($posts);
-// });
-
-// it('can use a custom attribute for the `SelectFilter`', function () {
-//     $posts = Post::factory(10)->create();
-
-//     $unpublishedPosts = $posts->where('is_published', false);
-
-//     livewire(PostsTable::class)
-//         ->assertCanSeeTableRecords($posts)
-//         ->filterTable('select_filter_attribute', false)
-//         ->assertCanSeeTableRecords($unpublishedPosts)
-//         ->filterTable('select_filter_attribute', true)
-//         ->assertCanNotSeeTableRecords($unpublishedPosts);
-// });
-
-// it('can assert a filter exists with a given configuration', function () {
-//     livewire(PostsTable::class)
-//         ->assertTableFilterExists('is_published', function (Filter $filter): bool {
-//             return $filter->getLabel() === 'Is published';
-//         });
-// });
-
-// it('can check if a filter is visible', function (): void {
-//     livewire(PostsTable::class)
-//         ->assertTableFilterVisible('is_published');
-// });
-
-// it('can check if a filter is hidden', function (): void {
-//     livewire(PostsTable::class)
-//         ->assertTableFilterHidden('hidden_filter');
-// });
+    assertSoftDeleted($post->first());
+});
