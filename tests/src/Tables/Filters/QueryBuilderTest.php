@@ -6,7 +6,6 @@ use Filament\Tests\Tables\Fixtures\PostsQueryBuilderTable;
 use Filament\Tests\Tables\TestCase;
 use function Filament\Tests\livewire;
 use function Pest\Laravel\assertSoftDeleted;
-use Illuminate\Database\Eloquent\Collection;
 
 uses(TestCase::class);
 
